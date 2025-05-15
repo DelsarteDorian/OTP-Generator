@@ -25,8 +25,9 @@
       <select id="category-filter">
         <option value="all">All</option>
       </select>
+      <button id="manage-categories-btn" class="small-btn">Manage Categories</button>
     </div>
-    <ul id="otp-list"></ul>
+    <ul id="otp-list" class="sortable"></ul>
     <div class="button-container">
       <button id="add-app-btn">Add OTP</button>
       <button id="export-btn">Export</button>
@@ -34,6 +35,7 @@
       <button id="import-trigger-btn">Import</button>
       <button id="toggle-dark-mode">Toggle Dark Mode</button>
       <button id="change-password-btn">Change Password</button>
+      <button id="setup-2fa-btn">Setup 2FA</button>
     </div>
   </div>
 
@@ -53,6 +55,41 @@
     </div>
   </div>
 
+  <!-- Manage Categories Modal -->
+  <div id="manage-categories-modal" class="modal">
+    <div class="modal-content">
+      <h2>Manage Categories</h2>
+      <div id="categories-list"></div>
+      <form id="add-category-form">
+        <input type="text" id="new-category" placeholder="New Category Name" required>
+        <div class="button-container">
+          <button type="submit">Add Category</button>
+          <button type="button" id="cancel-manage-categories">Close</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Setup 2FA Modal -->
+  <div id="setup-2fa-modal" class="modal">
+    <div class="modal-content">
+      <h2>Setup Two-Factor Authentication</h2>
+      <div id="2fa-setup-container">
+        <div id="2fa-qr-code"></div>
+        <p>Scan this QR code with your authenticator app</p>
+        <input type="text" id="2fa-secret" readonly>
+        <button id="copy-2fa-secret">Copy Secret</button>
+        <form id="verify-2fa-form">
+          <input type="text" id="2fa-code" placeholder="Enter 6-digit code" required>
+          <div class="button-container">
+            <button type="submit">Verify</button>
+            <button type="button" id="cancel-2fa-setup">Cancel</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
   <!-- Add OTP Modal -->
   <div id="add-otp-modal" class="modal">
     <div class="modal-content">
@@ -64,9 +101,34 @@
           <option value="TOTP">TOTP (Time-based)</option>
           <option value="HOTP">HOTP (Counter-based)</option>
         </select>
+        <select id="otp-category" required>
+          <option value="">Select Category</option>
+        </select>
         <div class="button-container">
           <button type="submit">Add OTP</button>
           <button type="button" id="cancel-add-otp">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Edit OTP Modal -->
+  <div id="edit-otp-modal" class="modal">
+    <div class="modal-content">
+      <h2>Edit OTP</h2>
+      <form id="edit-otp-form">
+        <input type="text" id="edit-otp-name" placeholder="Service Name" required>
+        <input type="text" id="edit-otp-secret" placeholder="Secret Key" required>
+        <select id="edit-otp-algorithm" required>
+          <option value="TOTP">TOTP (Time-based)</option>
+          <option value="HOTP">HOTP (Counter-based)</option>
+        </select>
+        <select id="edit-otp-category" required>
+          <option value="">Select Category</option>
+        </select>
+        <div class="button-container">
+          <button type="submit">Save Changes</button>
+          <button type="button" id="cancel-edit-otp">Cancel</button>
         </div>
       </form>
     </div>

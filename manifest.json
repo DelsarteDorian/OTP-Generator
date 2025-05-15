@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "OTP Generator",
   "version": "1.0",
-  "description": "Generate and manage OTP codes",
+  "description": "Generate and manage OTP codes for your accounts",
   "background": {
     "service_worker": "dist/background.bundle.js"
   },
@@ -20,11 +20,33 @@
   ],
   "host_permissions": ["<all_urls>"],
   "content_security_policy": {
-    "extension_pages": "script-src 'self'; object-src 'self'"
+    "extension_pages": "script-src 'self' 'wasm-unsafe-eval'; object-src 'self'"
   },
   "icons": {
     "16": "logo.png",
     "48": "logo.png",
     "128": "logo.png"
+  },
+  "web_accessible_resources": [{
+    "resources": ["icons/*", "lib/*"],
+    "matches": ["<all_urls>"]
+  }],
+  "author": "ddelsarte",
+  "homepage_url": "https://github.com/ddelsarte/OTP-Generator",
+  "minimum_chrome_version": "88",
+  "incognito": "split",
+  "offline_enabled": true,
+  "update_url": "https://clients2.google.com/service/update2/crx",
+  "externally_connectable": {
+    "matches": ["*://*.google.com/*"]
+  },
+  "commands": {
+    "_execute_action": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+O",
+        "mac": "Command+Shift+O"
+      },
+      "description": "Open OTP Generator"
+    }
   }
 }

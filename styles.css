@@ -150,6 +150,21 @@ li:hover {
   letter-spacing: 2px;
   color: #3498db;
   font-weight: 500;
+  cursor: pointer;
+}
+
+.app-category {
+  font-size: 12px;
+  color: #7f8c8d;
+  background-color: #f1f3f4;
+  padding: 2px 8px;
+  border-radius: 4px;
+  display: inline-block;
+}
+
+body.dark-mode .app-category {
+  background-color: #34495e;
+  color: #bdc3c7;
 }
 
 .action-buttons {
@@ -373,4 +388,257 @@ body.dark-mode ::-webkit-scrollbar-thumb:hover {
 
 .hidden {
   display: none;
+}
+
+/* Category Management */
+.small-btn {
+  padding: 6px 12px;
+  font-size: 12px;
+  margin-left: 8px;
+}
+
+#categories-list {
+  margin-bottom: 16px;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.category-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px;
+  margin: 4px 0;
+  background-color: #f8f9fa;
+  border-radius: 4px;
+}
+
+body.dark-mode .category-item {
+  background-color: #2c3e50;
+}
+
+/* Drag and Drop */
+.sortable li {
+  cursor: move;
+}
+
+.sortable li.dragging {
+  opacity: 0.5;
+  background-color: #e9ecef;
+}
+
+body.dark-mode .sortable li.dragging {
+  background-color: #34495e;
+}
+
+/* 2FA Setup */
+#2fa-setup-container {
+  text-align: center;
+}
+
+#2fa-qr-code {
+  margin: 20px auto;
+  padding: 10px;
+  background-color: white;
+  display: inline-block;
+  border-radius: 4px;
+}
+
+#2fa-secret {
+  width: 100%;
+  margin: 10px 0;
+  text-align: center;
+  font-family: monospace;
+}
+
+/* Dark mode adjustments */
+body.dark-mode #2fa-qr-code {
+  background-color: #34495e;
+}
+
+/* Enhanced OTP List */
+#otp-list {
+  margin: 16px 0;
+  padding: 8px;
+  background-color: #f8f9fa;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+#otp-list li {
+  background-color: white;
+  padding: 16px;
+  margin: 8px 0;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: all 0.2s ease;
+  cursor: grab;
+  position: relative;
+}
+
+#otp-list li::before {
+  content: "⋮⋮";
+  position: absolute;
+  left: 8px;
+  color: #95a5a6;
+  font-size: 16px;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+#otp-list li:hover::before {
+  opacity: 1;
+}
+
+#otp-list li:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+#otp-list li.dragging {
+  opacity: 0.8;
+  background-color: #f1f3f4;
+  box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+  cursor: grabbing;
+}
+
+#otp-list li.drag-over {
+  border-top: 2px solid #3498db;
+  margin-top: 16px;
+}
+
+/* Enhanced Buttons */
+.button-container {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin: 20px 0;
+  justify-content: center;
+}
+
+button {
+  padding: 12px 20px;
+  background-color: #3498db;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 120px;
+  justify-content: center;
+}
+
+button:hover {
+  background-color: #2980b9;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(52, 152, 219, 0.2);
+}
+
+button:active {
+  transform: translateY(0);
+}
+
+/* Action Buttons */
+.action-buttons {
+  display: flex;
+  gap: 8px;
+}
+
+.action-buttons button {
+  padding: 8px 12px;
+  min-width: auto;
+  font-size: 12px;
+}
+
+.edit-btn {
+  background-color: #3498db;
+}
+
+.edit-btn:hover {
+  background-color: #2980b9;
+}
+
+.delete-btn {
+  background-color: #e74c3c;
+}
+
+.delete-btn:hover {
+  background-color: #c0392b;
+}
+
+.repair-btn {
+  background-color: #2ecc71;
+}
+
+.repair-btn:hover {
+  background-color: #27ae60;
+}
+
+/* Dark Mode Enhancements */
+body.dark-mode #otp-list {
+  background-color: #2c3e50;
+}
+
+body.dark-mode #otp-list li {
+  background-color: #34495e;
+  border-color: #2c3e50;
+}
+
+body.dark-mode #otp-list li:hover {
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+
+body.dark-mode #otp-list li.dragging {
+  background-color: #2c3e50;
+}
+
+body.dark-mode #otp-list li.drag-over {
+  border-top-color: #3498db;
+}
+
+/* Category Filter Enhancement */
+#color-filter {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 16px 0;
+  padding: 12px;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+}
+
+#color-filter label {
+  font-weight: 500;
+  color: #2c3e50;
+}
+
+#color-filter select {
+  padding: 8px 12px;
+  border-radius: 6px;
+  border: 1px solid #e0e0e0;
+  background-color: white;
+  font-size: 14px;
+  min-width: 150px;
+}
+
+body.dark-mode #color-filter {
+  background-color: #2c3e50;
+}
+
+body.dark-mode #color-filter label {
+  color: #ecf0f1;
+}
+
+body.dark-mode #color-filter select {
+  background-color: #34495e;
+  border-color: #2c3e50;
+  color: #ecf0f1;
 }
