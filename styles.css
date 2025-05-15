@@ -317,6 +317,29 @@ body.dark-mode .modal-content button[type="button"] {
   background-color: #7f8c8d;
 }
 
+body.dark-mode .modal {
+  background-color: rgba(0, 0, 0, 0.7);
+}
+
+body.dark-mode .copy-notification {
+  background-color: #2c3e50;
+  color: #ecf0f1;
+}
+
+body.dark-mode #timer {
+  color: #bdc3c7;
+}
+
+body.dark-mode #color-filter label {
+  color: #ecf0f1;
+}
+
+body.dark-mode #color-filter select {
+  background-color: #34495e;
+  border-color: #2c3e50;
+  color: #ecf0f1;
+}
+
 /* Scrollbar styling */
 ::-webkit-scrollbar {
   width: 8px;

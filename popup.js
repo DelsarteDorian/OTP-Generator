@@ -36,22 +36,36 @@ const DEFAULT_PASSWORD_HASH = CryptoJS.SHA256("admin").toString();
 // Session Management
 async function checkSession() {
   try {
-    const data = await chrome.storage.local.get(["lastLoginTime", "apps", "masterPassword"]);
+    const data = await chrome.storage.local.get(["lastLoginTime", "masterPassword"]);
     const now = Date.now();
     
     if (data.lastLoginTime && (now - data.lastLoginTime) < SESSION_DURATION) {
       masterPassword = data.masterPassword;
-      if (data.apps) {
-        apps = decryptData(data.apps);
+      // Charger les apps seulement si on a un mot de passe
+      if (masterPassword) {
+        const appsData = await chrome.storage.local.get(["apps"]);
+        if (appsData.apps) {
+          try {
+            apps = decryptData(appsData.apps);
+          } catch (error) {
+            console.error("Error decrypting apps:", error);
+            apps = [];
+          }
+        }
       }
       loginContainer.style.display = "none";
       appContainer.style.display = "block";
       renderApps();
       return true;
+    } else {
+      loginContainer.style.display = "block";
+      appContainer.style.display = "none";
+      return false;
     }
-    return false;
   } catch (error) {
     console.error("Session check error:", error);
+    loginContainer.style.display = "block";
+    appContainer.style.display = "none";
     return false;
   }
 }
@@ -231,6 +245,11 @@ changePasswordForm.addEventListener("submit", handlePasswordChange);
 addAppBtn.addEventListener("click", showAddOtpModal);
 cancelAddOtp.addEventListener("click", hideAddOtpModal);
 addOtpForm.addEventListener("submit", handleAddOtp);
+exportBtn.addEventListener("click", exportApps);
+importBtn.addEventListener("change", importApps);
+document.getElementById("import-trigger-btn").addEventListener("click", () => {
+  document.getElementById("import-btn").click();
+});
 
 // Check session on load
 document.addEventListener("DOMContentLoaded", checkSession);
@@ -245,31 +264,77 @@ toggleDarkModeBtn.addEventListener("click", toggleDarkMode);
 
 // Export & Import Apps
 function exportApps() {
-  const encryptedApps = encryptData(apps);
-  const blob = new Blob([encryptedApps], { type: "application/json" });
-  const link = document.createElement("a");
-  link.href = URL.createObjectURL(blob);
-  link.download = "apps.json";
-  link.click();
+  try {
+    if (!masterPassword) {
+      throw new Error("Please login first to export OTPs");
+    }
+    
+    // Exporter directement les données cryptées
+    const data = {
+      version: "1.0.0",
+      timestamp: Date.now(),
+      encryptedData: apps
+    };
+    
+    const blob = new Blob([JSON.stringify(data)], { type: "application/json" });
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.download = "otp_backup.json";
+    link.click();
+  } catch (error) {
+    console.error("Export error:", error);
+    alert("Error exporting OTPs: " + error.message);
+  }
 }
 
 function importApps(event) {
   const file = event.target.files[0];
+  if (!file) return;
+
   const reader = new FileReader();
-  reader.onload = function () {
+  reader.onload = async function() {
     try {
-      const data = JSON.parse(reader.result);
-      apps = decryptData(data);
-      saveApps();
+      if (!masterPassword) {
+        alert("Please login first to import OTPs");
+        return;
+      }
+
+      const importedData = reader.result;
+      if (!importedData) {
+        throw new Error("Empty file");
+      }
+
+      const parsedData = JSON.parse(importedData);
+      
+      // Vérifier si c'est un fichier exporté par l'extension
+      if (!parsedData.version || !parsedData.encryptedData) {
+        throw new Error("Invalid backup file format");
+      }
+
+      // Vérifier la structure des données
+      const validApps = parsedData.encryptedData.filter(app => 
+        app && 
+        typeof app === 'object' && 
+        typeof app.name === 'string' && 
+        typeof app.secret === 'string' && 
+        typeof app.algorithm === 'string'
+      );
+
+      if (validApps.length === 0) {
+        throw new Error("No valid OTP entries found");
+      }
+
+      apps = validApps;
+      await saveApps();
+      renderApps();
+      alert(`Successfully imported ${validApps.length} OTP entries`);
     } catch (error) {
-      alert("Error importing file. Please check the file format.");
+      console.error("Import error:", error);
+      alert("Error importing file: " + error.message);
     }
   };
   reader.readAsText(file);
 }
-
-exportBtn.addEventListener("click", exportApps);
-importBtn.addEventListener("change", importApps);
 
 // OTP Management
 async function loadApps() {
