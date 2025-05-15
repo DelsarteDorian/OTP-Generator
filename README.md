@@ -1,107 +1,134 @@
 # OTP Generator - Chrome Extension
 
-A secure and user-friendly Chrome extension for managing One-Time Passwords (OTP) with advanced features.
+Un générateur d'OTP (One-Time Password) sécurisé et convivial pour Chrome, permettant de gérer facilement vos codes d'authentification à deux facteurs.
 
-## Features
+## 🚀 Démarrage Rapide
 
-- 🔐 Secure master password protection
-- 🔄 TOTP and HOTP support
-- 🎨 Dark mode support
-- 📱 Responsive design
-- 📋 Copy to clipboard functionality
-- 🔄 Auto-refresh OTP codes
-- 📤 Import/Export functionality
-- 🏷️ Category management
-- 🔄 Drag and drop reordering
-- 🔐 Optional two-factor authentication
-- 🎨 Customizable categories
-- 🔄 Automatic session management
+1. **Installation**
+   ```bash
+   git clone https://github.com/DelsarteDorian/OTP-Generator.git
+   ```
+   - Ouvrez Chrome et allez dans `chrome://extensions/`
+   - Activez le "Mode développeur" (en haut à droite)
+   - Cliquez sur "Charger l'extension non empaquetée" et sélectionnez le dossier de l'extension
 
-## Installation
+2. **Première utilisation**
+   - Mot de passe par défaut : `admin`
+   - Changez-le immédiatement après la première connexion
 
-1. Clone the repository:
-```bash
-git clone https://github.com/yourusername/otp-generator.git
-```
+## 📱 Guide d'utilisation
 
-2. Open Chrome and navigate to `chrome://extensions/`
+### 1. Gestion des OTPs
 
-3. Enable "Developer mode" in the top right
+#### Ajouter un OTP
+1. Cliquez sur "Add OTP"
+2. Remplissez les champs :
+   - **Service** : Nom du service (ex: Google, GitHub)
+   - **Secret** : Clé secrète fournie par le service
+   - **Algorithme** : TOTP (basé sur le temps) ou HOTP (basé sur un compteur)
+   - **Catégorie** : Optionnel, pour organiser vos OTPs
 
-4. Click "Load unpacked" and select the extension directory
+#### Utiliser un OTP
+- Cliquez sur le code pour le copier
+- Le code se régénère automatiquement toutes les 30 secondes
+- Utilisez le bouton "Repair" si le code ne fonctionne pas
 
-## Usage
+### 2. Organisation
 
-1. Set your master password on first launch
-2. Add OTP entries with:
-   - Service name
-   - Secret key
-   - Algorithm (TOTP/HOTP)
-   - Category (optional)
-3. Click on OTP codes to copy them
-4. Use the category filter to organize your OTPs
-5. Drag and drop to reorder OTPs
-6. Import/Export your OTPs for backup
+#### Catégories
+- Créez des catégories personnalisées
+- Filtrez les OTPs par catégorie
+- Réorganisez par glisser-déposer
 
-## Development
+#### Tri et Filtrage
+- Utilisez le menu déroulant pour filtrer par catégorie
+- Glissez-déposez les OTPs pour les réorganiser
+- Les modifications sont sauvegardées automatiquement
 
-### Project Structure
+### 3. Sécurité
+
+#### Protection
+- Mot de passe maître obligatoire
+- Chiffrement AES des données
+- Session de 1 heure
+- Authentification à deux facteurs optionnelle
+
+#### Import/Export
+- Exportez vos OTPs en format chiffré
+- Importez des sauvegardes existantes
+- Format compatible uniquement avec l'extension
+
+## 🔧 Fonctionnalités avancées
+
+### Mode sombre
+- Basculez entre les thèmes clair et sombre
+- Préférence sauvegardée automatiquement
+
+### Gestion des sessions
+- Déconnexion automatique après 1 heure
+- Reconnexion rapide avec le mot de passe
+
+### 2FA (Optionnel)
+1. Activez la 2FA dans les paramètres
+2. Scannez le QR code avec votre application d'authentification
+3. Entrez le code pour vérifier
+
+## 💾 Sauvegarde et restauration
+
+### Export
+1. Cliquez sur "Export"
+2. Un fichier `otp_backup.json` sera téléchargé
+3. Conservez ce fichier en lieu sûr
+
+### Import
+1. Cliquez sur "Import"
+2. Sélectionnez votre fichier de sauvegarde
+3. Les OTPs seront restaurés automatiquement
+
+## 🛠️ Développement
+
+### Structure du projet
 ```
 otp-generator/
-├── manifest.json
-├── popup.html
-├── popup.js
-├── styles.css
-└── icons/
+├── manifest.json    # Configuration de l'extension
+├── popup.html      # Interface utilisateur
+├── popup.js        # Logique principale
+├── styles.css      # Styles et thèmes
+└── icons/          # Icônes de l'extension
     └── logo.png
 ```
 
-### Dependencies
-- CryptoJS for encryption
-- OTPLib for OTP generation
-
-### Building
-No build step required. The extension runs directly from source.
-
-### Git Commands
-
+### Commandes Git
 ```bash
-# Add all changes
+# Ajouter les modifications
 git add .
 
-# Commit changes
-git commit -m "feat: add category management and drag-drop"
+# Créer un commit
+git commit -m "feat: description des modifications"
 
-# Push to GitHub
+# Envoyer sur GitHub
 git push origin main
 ```
 
-## Security Features
+## 🔐 Sécurité et confidentialité
 
-- AES encryption for stored data
-- Master password protection
-- Optional 2FA support
-- Secure session management
-- Encrypted import/export
+- Toutes les données sont chiffrées localement
+- Aucune donnée n'est envoyée à des serveurs externes
+- Les clés secrètes restent sur votre appareil
+- Session automatique pour la sécurité
 
-## Contributing
+## 🤝 Contribution
 
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
+1. Fork du projet
+2. Créez une branche (`git checkout -b feature/NouvelleFonctionnalite`)
+3. Committez vos changements (`git commit -m 'Ajout d'une fonctionnalité'`)
+4. Poussez vers la branche (`git push origin feature/NouvelleFonctionnalite`)
+5. Ouvrez une Pull Request
 
-## License
+## 📝 Licence
 
-This project is licensed under the MIT License - see the LICENSE file for details.
+Ce projet est sous licence MIT - voir le fichier LICENSE pour plus de détails.
 
-## Acknowledgments
-
-- OTPLib for OTP generation
-- CryptoJS for encryption
-- Chrome Extension API
-
-## Author
+## 👤 Auteur
 
 Dorian Delsarte ([@DelsarteDorian](https://github.com/DelsarteDorian)) 
