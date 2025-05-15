@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OTP Generator</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <!-- Login screen -->
+  <div id="login-container">
+    <h1>Login</h1>
+    <form id="login-form">
+      <input type="password" id="master-password" placeholder="Enter Master Password" required>
+      <button type="submit">Login</button>
+    </form>
+  </div>
+
+  <!-- OTP Generator screen -->
+  <div id="app-container" class="hidden">
+    <h1>OTP Generator</h1>
+    <div id="timer"></div>
+    <div id="color-filter">
+      <label for="filter">Filter by Category:</label>
+      <select id="category-filter">
+        <option value="all">All</option>
+      </select>
+    </div>
+    <ul id="otp-list"></ul>
+    <div class="button-container">
+      <button id="add-app-btn">Add New OTP</button>
+      <button id="export-btn">Export Codes</button>
+      <button id="import-btn">Import Codes</button>
+      <button id="toggle-dark-mode">Toggle Dark Mode</button>
+      <button id="change-password-btn">Change Password</button>
+    </div>
+  </div>
+
+  <!-- Change Password Modal -->
+  <div id="change-password-modal" class="modal">
+    <div class="modal-content">
+      <h2>Change Password</h2>
+      <form id="change-password-form">
+        <input type="password" id="current-password" placeholder="Current Password" required>
+        <input type="password" id="new-password" placeholder="New Password" required>
+        <input type="password" id="confirm-password" placeholder="Confirm New Password" required>
+        <div class="button-container">
+          <button type="submit">Change Password</button>
+          <button type="button" id="cancel-change-password">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Add OTP Modal -->
+  <div id="add-otp-modal" class="modal">
+    <div class="modal-content">
+      <h2>Add New OTP</h2>
+      <form id="add-otp-form">
+        <input type="text" id="otp-name" placeholder="Service Name" required>
+        <input type="text" id="otp-secret" placeholder="Secret Key" required>
+        <select id="otp-algorithm" required>
+          <option value="TOTP">TOTP (Time-based)</option>
+          <option value="HOTP">HOTP (Counter-based)</option>
+        </select>
+        <div class="button-container">
+          <button type="submit">Add OTP</button>
+          <button type="button" id="cancel-add-otp">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Copy notification -->
+  <div class="copy-notification" id="copy-notification">Code copied!</div>
+
+  <script src="libs/crypto-js.min.js"></script>
+  <script src="libs/otplib-browser.js"></script>
+  <script src="popup.js"></script>
+</body>
+</html>
