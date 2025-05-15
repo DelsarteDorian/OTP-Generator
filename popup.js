@@ -35,17 +35,51 @@ const SESSION_DURATION = 3600000; // 1 hour in milliseconds
 // Initialize with default password hash
 const DEFAULT_PASSWORD_HASH = CryptoJS.SHA256("admin").toString();
 
+// Storage Management
+const storage = {
+  async get(keys) {
+    try {
+      const data = {};
+      if (Array.isArray(keys)) {
+        keys.forEach(key => {
+          const value = localStorage.getItem(key);
+          if (value) {
+            try {
+              data[key] = JSON.parse(value);
+            } catch {
+              data[key] = value;
+            }
+          }
+        });
+      }
+      return data;
+    } catch (error) {
+      console.error("Storage get error:", error);
+      return {};
+    }
+  },
+
+  async set(data) {
+    try {
+      Object.entries(data).forEach(([key, value]) => {
+        localStorage.setItem(key, JSON.stringify(value));
+      });
+    } catch (error) {
+      console.error("Storage set error:", error);
+    }
+  }
+};
+
 // Session Management
 async function checkSession() {
   try {
-    const data = await chrome.storage.local.get(["lastLoginTime", "masterPassword"]);
+    const data = await storage.get(["lastLoginTime", "masterPassword"]);
     const now = Date.now();
     
     if (data.lastLoginTime && (now - data.lastLoginTime) < SESSION_DURATION) {
       masterPassword = data.masterPassword;
-      // Charger les apps seulement si on a un mot de passe
       if (masterPassword) {
-        const appsData = await chrome.storage.local.get(["apps"]);
+        const appsData = await storage.get(["apps"]);
         if (appsData.apps) {
           try {
             apps = decryptData(appsData.apps);
@@ -75,7 +109,7 @@ async function checkSession() {
 // Password Management
 async function getStoredPasswordHash() {
   try {
-    const data = await chrome.storage.local.get(["passwordHash"]);
+    const data = await storage.get(["passwordHash"]);
     return data.passwordHash || DEFAULT_PASSWORD_HASH;
   } catch (error) {
     console.error("Error getting password hash:", error);
@@ -85,7 +119,7 @@ async function getStoredPasswordHash() {
 
 async function setPasswordHash(hash) {
   try {
-    await chrome.storage.local.set({ passwordHash: hash });
+    await storage.set({ passwordHash: hash });
   } catch (error) {
     console.error("Error setting password hash:", error);
   }
@@ -132,14 +166,13 @@ async function login(event) {
 
     masterPassword = password;
     const now = Date.now();
-    await chrome.storage.local.set({ 
+    await storage.set({ 
       lastLoginTime: now,
       masterPassword: password 
     });
     lastLoginTime = now;
     
-    // Load existing apps
-    const data = await chrome.storage.local.get(["apps"]);
+    const data = await storage.get(["apps"]);
     if (data.apps) {
       apps = decryptData(data.apps);
     }
@@ -186,7 +219,7 @@ async function handlePasswordChange(event) {
     const newHash = CryptoJS.SHA256(newPassword).toString();
     await setPasswordHash(newHash);
     masterPassword = newPassword;
-    await chrome.storage.local.set({ masterPassword: newPassword });
+    await storage.set({ masterPassword: newPassword });
     hideChangePasswordModal();
     alert("Password changed successfully!");
   } catch (error) {
@@ -331,13 +364,13 @@ document.addEventListener("DOMContentLoaded", checkSession);
 async function toggleDarkMode() {
   darkMode = !darkMode;
   document.body.classList.toggle("dark-mode", darkMode);
-  await chrome.storage.local.set({ darkMode });
+  await storage.set({ darkMode });
 }
 
 // Initialize dark mode from storage
 async function initializeDarkMode() {
   try {
-    const data = await chrome.storage.local.get(["darkMode"]);
+    const data = await storage.get(["darkMode"]);
     darkMode = data.darkMode || false;
     document.body.classList.toggle("dark-mode", darkMode);
   } catch (error) {
@@ -424,7 +457,7 @@ function importApps(event) {
 // OTP Management
 async function loadApps() {
   try {
-    const data = await chrome.storage.local.get(["apps"]);
+    const data = await storage.get(["apps"]);
     if (data.apps) {
       apps = decryptData(data.apps);
       renderApps();
@@ -544,7 +577,7 @@ async function saveApps() {
   try {
     const encryptedApps = encryptData(apps);
     if (encryptedApps) {
-      await chrome.storage.local.set({ apps: encryptedApps });
+      await storage.set({ apps: encryptedApps });
       renderApps();
     }
   } catch (error) {
@@ -615,7 +648,7 @@ async function deleteCategory(category) {
 
 async function saveCategories() {
   try {
-    await chrome.storage.local.set({ categories });
+    await storage.set({ categories });
   } catch (error) {
     console.error("Error saving categories:", error);
   }
@@ -742,7 +775,7 @@ async function verify2FA(event) {
   
   if (otplib.authenticator.verify({ token: code, secret })) {
     is2FAEnabled = true;
-    await chrome.storage.local.set({ 
+    await storage.set({ 
       is2FAEnabled: true,
       twoFASecret: secret 
     });
@@ -767,7 +800,7 @@ document.getElementById("category-filter").addEventListener("change", renderApps
 // Initialize
 async function initialize() {
   try {
-    const data = await chrome.storage.local.get(["categories", "is2FAEnabled"]);
+    const data = await storage.get(["categories", "is2FAEnabled"]);
     if (data.categories) {
       categories = data.categories;
     }

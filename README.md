@@ -1,6 +1,19 @@
-# OTP Generator - Chrome Extension
+# OTP Generator - Extension Navigateur
 
-Un générateur d'OTP (One-Time Password) sécurisé et convivial pour Chrome, permettant de gérer facilement vos codes d'authentification à deux facteurs.
+Un générateur d'OTP (One-Time Password) sécurisé et convivial, compatible avec tous les navigateurs modernes, permettant de gérer facilement vos codes d'authentification à deux facteurs.
+
+## 🌐 Compatibilité
+
+### Navigateurs supportés
+- ✅ Google Chrome
+- ✅ Microsoft Edge
+- ✅ Opera
+- ✅ Firefox
+- ✅ Safari
+- ✅ Brave
+- ✅ Vivaldi
+
+> Note: L'extension utilise le stockage local du navigateur pour une compatibilité maximale.
 
 ## 🚀 Démarrage Rapide
 
@@ -8,8 +21,14 @@ Un générateur d'OTP (One-Time Password) sécurisé et convivial pour Chrome, p
    ```bash
    git clone https://github.com/DelsarteDorian/OTP-Generator.git
    ```
-   - Ouvrez Chrome et allez dans `chrome://extensions/`
-   - Activez le "Mode développeur" (en haut à droite)
+   
+   ### Tous les navigateurs
+   - Ouvrez le navigateur et allez dans la section extensions :
+     - Chrome/Edge/Brave : `chrome://extensions/`
+     - Firefox : `about:addons`
+     - Opera : `opera://extensions`
+     - Safari : Préférences > Extensions
+   - Activez le "Mode développeur" ou "Développement"
    - Cliquez sur "Charger l'extension non empaquetée" et sélectionnez le dossier de l'extension
 
 2. **Première utilisation**
@@ -52,6 +71,12 @@ Un générateur d'OTP (One-Time Password) sécurisé et convivial pour Chrome, p
 - Chiffrement AES des données
 - Session de 1 heure
 - Authentification à deux facteurs optionnelle
+
+#### Stockage
+- Données stockées localement dans le navigateur
+- Chiffrement des données sensibles
+- Pas de synchronisation entre appareils
+- Limite de stockage : ~5-10 MB
 
 #### Import/Export
 - Exportez vos OTPs en format chiffré
@@ -98,32 +123,13 @@ otp-generator/
     └── logo.png
 ```
 
-### Commandes Git
-```bash
-# Ajouter les modifications
-git add .
-
-# Créer un commit
-git commit -m "feat: description des modifications"
-
-# Envoyer sur GitHub
-git push origin main
-```
-
 ## 🔐 Sécurité et confidentialité
 
 - Toutes les données sont chiffrées localement
 - Aucune donnée n'est envoyée à des serveurs externes
 - Les clés secrètes restent sur votre appareil
 - Session automatique pour la sécurité
-
-## 🤝 Contribution
-
-1. Fork du projet
-2. Créez une branche (`git checkout -b feature/NouvelleFonctionnalite`)
-3. Committez vos changements (`git commit -m 'Ajout d'une fonctionnalité'`)
-4. Poussez vers la branche (`git push origin feature/NouvelleFonctionnalite`)
-5. Ouvrez une Pull Request
+- Stockage local sécurisé
 
 ## 📝 Licence
 

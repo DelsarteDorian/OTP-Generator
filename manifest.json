@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
   "name": "OTP Generator",
-  "version": "1.0",
-  "description": "Generate and manage OTP codes for your accounts",
+  "version": "1.0.0",
+  "description": "A secure OTP generator with advanced features",
   "background": {
     "service_worker": "dist/background.bundle.js"
   },
@@ -15,12 +15,11 @@
     }
   },
   "permissions": [
-    "storage",
-    "clipboardWrite"
+    "storage"
   ],
   "host_permissions": ["<all_urls>"],
   "content_security_policy": {
-    "extension_pages": "script-src 'self' 'wasm-unsafe-eval'; object-src 'self'"
+    "extension_pages": "script-src 'self'; object-src 'self'"
   },
   "icons": {
     "16": "logo.png",
