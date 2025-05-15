@@ -18,7 +18,13 @@
 
   <!-- OTP Generator screen -->
   <div id="app-container" class="hidden">
-    <h1>OTP Generator</h1>
+    <div class="header">
+      <h1>OTP Generator</h1>
+      <div class="header-buttons">
+        <button id="toggle-dark-mode" title="Toggle Dark Mode">🌓</button>
+        <button id="logout-btn" title="Logout">🚪</button>
+      </div>
+    </div>
     <div id="timer"></div>
     <div id="color-filter">
       <label for="filter">Filter by Category:</label>
@@ -33,7 +39,6 @@
       <button id="export-btn">Export</button>
       <input type="file" id="import-btn" accept=".json" style="display: none;">
       <button id="import-trigger-btn">Import</button>
-      <button id="toggle-dark-mode">Toggle Dark Mode</button>
       <button id="change-password-btn">Change Password</button>
       <button id="setup-2fa-btn">Setup 2FA</button>
     </div>

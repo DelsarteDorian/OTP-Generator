@@ -164,6 +164,21 @@ async function login(event) {
       return;
     }
 
+    // Vérifier si 2FA est activé
+    const data = await storage.get(["is2FAEnabled", "twoFASecret"]);
+    if (data.is2FAEnabled) {
+      const code = prompt("Please enter your 2FA code:");
+      if (!code) {
+        alert("2FA code is required!");
+        return;
+      }
+
+      if (!otplib.authenticator.verify({ token: code, secret: data.twoFASecret })) {
+        alert("Invalid 2FA code!");
+        return;
+      }
+    }
+
     masterPassword = password;
     const now = Date.now();
     await storage.set({ 
@@ -172,9 +187,9 @@ async function login(event) {
     });
     lastLoginTime = now;
     
-    const data = await storage.get(["apps"]);
-    if (data.apps) {
-      apps = decryptData(data.apps);
+    const appsData = await storage.get(["apps"]);
+    if (appsData.apps) {
+      apps = decryptData(appsData.apps);
     }
     
     loginContainer.style.display = "none";
@@ -817,3 +832,31 @@ document.addEventListener("DOMContentLoaded", () => {
   checkSession();
   initialize();
 });
+
+// Logout function
+async function logout() {
+  try {
+    // Clear session data
+    await storage.set({
+      lastLoginTime: null,
+      masterPassword: null
+    });
+    
+    // Reset state
+    masterPassword = null;
+    lastLoginTime = null;
+    
+    // Show login screen
+    loginContainer.style.display = "block";
+    appContainer.style.display = "none";
+    
+    // Clear password input
+    masterPasswordInput.value = "";
+  } catch (error) {
+    console.error("Logout error:", error);
+    alert("An error occurred during logout. Please try again.");
+  }
+}
+
+// Add event listener for logout button
+document.getElementById("logout-btn").addEventListener("click", logout);
